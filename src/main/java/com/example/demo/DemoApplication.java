@@ -21,5 +21,4 @@ public class DemoApplication {
      	System.out.println("Spring Core Version:- " + SpringVersion.getVersion());
       	springApplication.run(args);
 	}
-
 }
