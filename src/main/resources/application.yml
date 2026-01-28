@@ -16,7 +16,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     show-sql: false
     properties:
       hibernate:
@@ -56,7 +56,8 @@ application:
       strength: 12
 
   recaptcha:
-    secret-key: ${RECAPTCHA_SECRET:your-recaptcha-secret}
+    secret-key: ${RECAPTCHA_SECRET:6LdJy1gsAAAAAFzf1MdHhtjKVsPOqIRQkYMEsGRz}
+    site-key: 6LdJy1gsAAAAAGsTyz2nDZMJ2-ujzplf8UplghuR
     verify-url: https://www.google.com/recaptcha/api/siteverify
     threshold: 0.5
 
@@ -81,9 +82,8 @@ springdoc:
 logging:
   level:
     root: INFO
-    com.litethinking: DEBUG
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    com.litethinking: INFO
+    org.hibernate.SQL: INFO
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
