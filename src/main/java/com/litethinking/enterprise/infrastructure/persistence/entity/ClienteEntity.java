@@ -16,7 +16,7 @@ public class ClienteEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(name = "documento", unique = true, nullable = false, length = 20)
     private String documento;
