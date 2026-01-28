@@ -319,6 +319,12 @@ Los logs se almacenan en:
 - Archivo: `logs/application.log` (rotación diaria)
 - Base de datos: `excepciones_sistema` (errores críticos)
 
+## Contacto y Soporte
+
+Para dudas o issues:
+- Email: soporte@litethinking.com
+- WhatsApp: +57 324 685 9004
 
 ## Licencia
-MIT License 
+
+Propiedad de Lite Thinking - 2024
