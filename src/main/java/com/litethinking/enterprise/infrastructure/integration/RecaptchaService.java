@@ -46,7 +46,8 @@ public class RecaptchaService implements AuthenticationUseCase.RecaptchaValidato
                 throw new BusinessRuleViolationException("reCAPTCHA validation failed");
             }
 
-            if (response.score() < properties.getThreshold()) {
+
+            if (response.score() != null && response.score() < properties.getThreshold()) {
                 logger.warn("reCAPTCHA score too low: {}", response.score());
                 throw new BusinessRuleViolationException("reCAPTCHA score too low");
             }

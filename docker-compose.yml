@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    container_name: enterprise-db
+    environment:
+      POSTGRES_DB: enterprise_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+    networks:
+      - enterprise-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: enterprise-api
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: enterprise_db
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      JWT_SECRET: development-secret-key-change-in-production-at-least-32-characters
+      RECAPTCHA_SECRET: ${RECAPTCHA_SECRET}
+      AWS_REGION: ${AWS_REGION:-us-east-1}
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_KEY: ${AWS_SECRET_KEY}
+      AWS_SES_FROM: ${AWS_SES_FROM}
+      AWS_SES_ENABLED: ${AWS_SES_ENABLED:-false}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - enterprise-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  enterprise-network:
+    driver: bridge
