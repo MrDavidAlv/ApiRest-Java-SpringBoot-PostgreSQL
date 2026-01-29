@@ -6,9 +6,11 @@ public record LoginResponse(
         Long usuarioId,
         String correo,
         String rol,
+        String nombreMostrar,
+        String avatar,
         long expiraEn
 ) {
-    public static LoginResponse of(String token, Long usuarioId, String correo, String rol, long expiraEn) {
-        return new LoginResponse(token, "Bearer", usuarioId, correo, rol, expiraEn);
+    public static LoginResponse of(String token, Long usuarioId, String correo, String rol, String nombreMostrar, String avatar, long expiraEn) {
+        return new LoginResponse(token, "Bearer", usuarioId, correo, rol, nombreMostrar, avatar, expiraEn);
     }
 }

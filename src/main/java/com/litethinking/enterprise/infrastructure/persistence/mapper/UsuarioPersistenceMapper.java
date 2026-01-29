@@ -30,6 +30,10 @@ public class UsuarioPersistenceMapper {
 
         setId(usuario, entity.getId());
 
+        if (entity.getNombreMostrar() != null || entity.getAvatar() != null) {
+            usuario.actualizarPerfil(entity.getNombreMostrar(), entity.getAvatar());
+        }
+
         if (!entity.getActivo()) {
             usuario.desactivar();
         }
@@ -48,6 +52,8 @@ public class UsuarioPersistenceMapper {
         entity.setPassword(usuario.getPasswordHash());
         entity.setRol(rolEntity);
         entity.setActivo(usuario.isActivo());
+        entity.setNombreMostrar(usuario.getNombreMostrar());
+        entity.setAvatar(usuario.getAvatar());
         entity.setFechaCreacion(usuario.getFechaCreacion());
         entity.setUsuarioCreaId(usuario.getUsuarioCreaId());
 

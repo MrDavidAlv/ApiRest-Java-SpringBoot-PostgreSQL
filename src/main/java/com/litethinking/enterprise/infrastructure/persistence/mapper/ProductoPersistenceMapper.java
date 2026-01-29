@@ -39,6 +39,10 @@ public class ProductoPersistenceMapper {
             producto.agregarCategoria(categoriaEntity.getId());
         });
 
+        if (entity.getUrlImagen() != null) {
+            producto.actualizarImagen(entity.getUrlImagen());
+        }
+
         if (!entity.getActivo()) {
             producto.desactivar();
         }
@@ -57,6 +61,7 @@ public class ProductoPersistenceMapper {
         entity.setCaracteristicas(producto.getCaracteristicas());
         entity.setEmpresaNit(producto.getEmpresaNit().getValue());
         entity.setActivo(producto.isActivo());
+        entity.setUrlImagen(producto.getUrlImagen());
         entity.setFechaCreacion(producto.getFechaCreacion());
         entity.setFechaModificacion(producto.getFechaModificacion());
         entity.setUsuarioCreaId(producto.getUsuarioCreaId());

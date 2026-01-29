@@ -15,6 +15,7 @@ public class Producto {
     private String caracteristicas;
     private Nit empresaNit;
     private boolean activo;
+    private String urlImagen;
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaModificacion;
     private Long usuarioCreaId;
@@ -63,6 +64,11 @@ public class Producto {
 
         this.nombre = nombre;
         this.caracteristicas = caracteristicas;
+        this.fechaModificacion = LocalDateTime.now();
+    }
+
+    public void actualizarImagen(String urlImagen) {
+        this.urlImagen = urlImagen;
         this.fechaModificacion = LocalDateTime.now();
     }
 
@@ -150,6 +156,10 @@ public class Producto {
 
     public Set<Integer> getCategoriaIds() {
         return Collections.unmodifiableSet(categoriaIds);
+    }
+
+    public String getUrlImagen() {
+        return urlImagen;
     }
 
     @Override

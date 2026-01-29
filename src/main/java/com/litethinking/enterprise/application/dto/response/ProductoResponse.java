@@ -9,6 +9,7 @@ public record ProductoResponse(
         String caracteristicas,
         String empresaNit,
         boolean activo,
+        String urlImagen,
         List<PrecioResponse> precios,
         LocalDateTime fechaCreacion
 ) {

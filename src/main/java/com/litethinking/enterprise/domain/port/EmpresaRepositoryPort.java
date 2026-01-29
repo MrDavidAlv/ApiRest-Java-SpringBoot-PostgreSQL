@@ -1,5 +1,6 @@
 package com.litethinking.enterprise.domain.port;
 
+import com.litethinking.enterprise.application.dto.EmpresaFilters;
 import com.litethinking.enterprise.domain.model.Empresa;
 import com.litethinking.enterprise.domain.model.valueobject.Nit;
 
@@ -15,6 +16,8 @@ public interface EmpresaRepositoryPort {
     List<Empresa> buscarTodas();
 
     List<Empresa> buscarActivas();
+
+    List<Empresa> buscar(EmpresaFilters filters);
 
     boolean existePorNit(Nit nit);
 

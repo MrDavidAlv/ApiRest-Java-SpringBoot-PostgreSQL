@@ -28,6 +28,9 @@ public record CrearProductoRequest(
         @Valid
         List<PrecioRequest> precios,
 
-        Set<Integer> categoriaIds
+        Set<Integer> categoriaIds,
+
+        @Size(max = 500, message = "Image URL cannot exceed 500 characters")
+        String urlImagen
 ) {
 }

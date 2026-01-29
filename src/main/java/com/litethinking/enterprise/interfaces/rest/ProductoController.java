@@ -1,9 +1,11 @@
 package com.litethinking.enterprise.interfaces.rest;
 
+import com.litethinking.enterprise.application.dto.ProductoFilters;
 import com.litethinking.enterprise.application.dto.request.CrearProductoRequest;
 import com.litethinking.enterprise.application.dto.response.ProductoResponse;
 import com.litethinking.enterprise.application.usecase.ProductoUseCase;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -44,9 +46,15 @@ public class ProductoController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'EXTERNO')")
-    @Operation(summary = "Get all active products")
-    public ResponseEntity<List<ProductoResponse>> buscarTodos() {
-        List<ProductoResponse> response = productoUseCase.buscarTodos();
+    @Operation(summary = "Get products with optional filters")
+    public ResponseEntity<List<ProductoResponse>> buscarTodos(
+            @Parameter(description = "Search term (name or code)") @RequestParam(required = false) String searchTerm,
+            @Parameter(description = "Filter by active status") @RequestParam(required = false) Boolean activo,
+            @Parameter(description = "Filter by company NIT") @RequestParam(required = false) String empresaNit,
+            @Parameter(description = "Filter by category ID") @RequestParam(required = false) Integer categoriaId
+    ) {
+        ProductoFilters filters = new ProductoFilters(searchTerm, activo, empresaNit, categoriaId);
+        List<ProductoResponse> response = productoUseCase.buscarConFiltros(filters);
         return ResponseEntity.ok(response);
     }
 

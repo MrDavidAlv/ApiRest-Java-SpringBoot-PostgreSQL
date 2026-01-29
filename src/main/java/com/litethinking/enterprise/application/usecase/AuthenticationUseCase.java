@@ -55,6 +55,8 @@ public class AuthenticationUseCase {
                 usuario.getId(),
                 usuario.getCorreo().getValue(),
                 usuario.getRol().getNombre(),
+                usuario.getNombreMostrar(),
+                usuario.getAvatar(),
                 expiraEn
         );
     }

@@ -1,5 +1,6 @@
 package com.litethinking.enterprise.application.usecase;
 
+import com.litethinking.enterprise.application.dto.ProductoFilters;
 import com.litethinking.enterprise.application.dto.request.CrearProductoRequest;
 import com.litethinking.enterprise.application.dto.request.PrecioRequest;
 import com.litethinking.enterprise.application.dto.response.PrecioResponse;
@@ -77,6 +78,10 @@ public class ProductoUseCase {
             request.categoriaIds().forEach(producto::agregarCategoria);
         }
 
+        if (request.urlImagen() != null) {
+            producto.actualizarImagen(request.urlImagen());
+        }
+
         Producto productoGuardado = productoRepository.guardar(producto);
 
         return buildProductoResponse(productoGuardado);
@@ -93,6 +98,13 @@ public class ProductoUseCase {
 
     public List<ProductoResponse> buscarTodos() {
         List<Producto> productos = productoRepository.buscarActivos();
+        return productos.stream()
+                .map(this::buildProductoResponse)
+                .toList();
+    }
+
+    public List<ProductoResponse> buscarConFiltros(ProductoFilters filters) {
+        List<Producto> productos = productoRepository.buscar(filters);
         return productos.stream()
                 .map(this::buildProductoResponse)
                 .toList();
@@ -131,6 +143,7 @@ public class ProductoUseCase {
                 producto.getCaracteristicas(),
                 producto.getEmpresaNit().getValue(),
                 producto.isActivo(),
+                producto.getUrlImagen(),
                 precios,
                 producto.getFechaCreacion()
         );

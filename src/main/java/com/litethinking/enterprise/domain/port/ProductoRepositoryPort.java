@@ -1,5 +1,6 @@
 package com.litethinking.enterprise.domain.port;
 
+import com.litethinking.enterprise.application.dto.ProductoFilters;
 import com.litethinking.enterprise.domain.model.Producto;
 import com.litethinking.enterprise.domain.model.valueobject.CodigoProducto;
 import com.litethinking.enterprise.domain.model.valueobject.Nit;
@@ -18,6 +19,8 @@ public interface ProductoRepositoryPort {
     List<Producto> buscarPorEmpresa(Nit empresaNit);
 
     List<Producto> buscarActivos();
+
+    List<Producto> buscar(ProductoFilters filters);
 
     boolean existePorCodigo(CodigoProducto codigo);
 

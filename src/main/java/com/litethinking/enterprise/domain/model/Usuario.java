@@ -13,6 +13,8 @@ public class Usuario {
     private String passwordHash;
     private Rol rol;
     private boolean activo;
+    private String nombreMostrar;
+    private String avatar;
     private LocalDateTime fechaCreacion;
     private Long usuarioCreaId;
 
@@ -61,6 +63,13 @@ public class Usuario {
         this.passwordHash = newPasswordHash;
     }
 
+    public void actualizarPerfil(String nombreMostrar, String avatar) {
+        this.nombreMostrar = nombreMostrar;
+        if (avatar != null && !avatar.isBlank()) {
+            this.avatar = avatar;
+        }
+    }
+
     public boolean tieneRol(String nombreRol) {
         return this.rol != null && this.rol.getNombre().equals(nombreRol);
     }
@@ -95,6 +104,14 @@ public class Usuario {
 
     public Long getUsuarioCreaId() {
         return usuarioCreaId;
+    }
+
+    public String getNombreMostrar() {
+        return nombreMostrar;
+    }
+
+    public String getAvatar() {
+        return avatar;
     }
 
     @Override

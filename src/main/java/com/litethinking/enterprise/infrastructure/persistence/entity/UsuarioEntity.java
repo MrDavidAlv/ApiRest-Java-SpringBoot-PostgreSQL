@@ -39,11 +39,20 @@ public class UsuarioEntity {
     @Column(name = "activo", nullable = false)
     private Boolean activo;
 
+    @Column(name = "nombre_mostrar", length = 100)
+    private String nombreMostrar;
+
+    @Column(name = "avatar", length = 50)
+    private String avatar;
+
     @PrePersist
     protected void onCreate() {
         fechaCreacion = LocalDateTime.now();
         if (activo == null) {
             activo = true;
+        }
+        if (avatar == null) {
+            avatar = "avatar1.webp";
         }
     }
 }

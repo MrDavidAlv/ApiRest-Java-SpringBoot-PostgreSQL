@@ -1,5 +1,6 @@
 package com.litethinking.enterprise.application.usecase;
 
+import com.litethinking.enterprise.application.dto.EmpresaFilters;
 import com.litethinking.enterprise.application.dto.request.ActualizarEmpresaRequest;
 import com.litethinking.enterprise.application.dto.request.CrearEmpresaRequest;
 import com.litethinking.enterprise.application.dto.response.EmpresaResponse;
@@ -66,6 +67,11 @@ public class EmpresaUseCase {
 
     public List<EmpresaResponse> buscarTodas() {
         List<Empresa> empresas = empresaRepository.buscarActivas();
+        return empresaMapper.toResponseList(empresas);
+    }
+
+    public List<EmpresaResponse> buscarConFiltros(EmpresaFilters filters) {
+        List<Empresa> empresas = empresaRepository.buscar(filters);
         return empresaMapper.toResponseList(empresas);
     }
 

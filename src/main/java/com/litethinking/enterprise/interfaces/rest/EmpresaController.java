@@ -1,10 +1,12 @@
 package com.litethinking.enterprise.interfaces.rest;
 
+import com.litethinking.enterprise.application.dto.EmpresaFilters;
 import com.litethinking.enterprise.application.dto.request.ActualizarEmpresaRequest;
 import com.litethinking.enterprise.application.dto.request.CrearEmpresaRequest;
 import com.litethinking.enterprise.application.dto.response.EmpresaResponse;
 import com.litethinking.enterprise.application.usecase.EmpresaUseCase;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -45,9 +47,13 @@ public class EmpresaController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'EXTERNO')")
-    @Operation(summary = "Get all active companies")
-    public ResponseEntity<List<EmpresaResponse>> buscarTodas() {
-        List<EmpresaResponse> response = empresaUseCase.buscarTodas();
+    @Operation(summary = "Get companies with optional filters")
+    public ResponseEntity<List<EmpresaResponse>> buscarTodas(
+            @Parameter(description = "Search term (name or NIT)") @RequestParam(required = false) String searchTerm,
+            @Parameter(description = "Filter by active status") @RequestParam(required = false) Boolean activo
+    ) {
+        EmpresaFilters filters = new EmpresaFilters(searchTerm, activo);
+        List<EmpresaResponse> response = empresaUseCase.buscarConFiltros(filters);
         return ResponseEntity.ok(response);
     }
 

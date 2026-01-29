@@ -10,6 +10,7 @@ import com.litethinking.enterprise.infrastructure.persistence.repository.jpa.Rol
 import com.litethinking.enterprise.infrastructure.persistence.repository.jpa.UsuarioJpaRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -49,6 +50,13 @@ public class UsuarioRepositoryAdapter implements UsuarioRepositoryPort {
     public Optional<Usuario> buscarPorId(Long id) {
         return usuarioJpaRepository.findById(id)
                 .map(mapper::toDomain);
+    }
+
+    @Override
+    public List<Usuario> buscarTodos() {
+        return usuarioJpaRepository.findAll().stream()
+                .map(mapper::toDomain)
+                .toList();
     }
 
     @Override

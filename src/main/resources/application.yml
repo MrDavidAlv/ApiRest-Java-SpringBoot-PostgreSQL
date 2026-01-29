@@ -55,6 +55,11 @@ application:
     bcrypt:
       strength: 12
 
+  upload:
+    directory: ${UPLOAD_DIR:./uploads}
+    max-file-size: 5242880
+    allowed-types: image/jpeg,image/png,image/webp,image/jpg
+
   recaptcha:
     secret-key: ${RECAPTCHA_SECRET:6LdJy1gsAAAAAFzf1MdHhtjKVsPOqIRQkYMEsGRz}
     site-key: 6LdJy1gsAAAAAGsTyz2nDZMJ2-ujzplf8UplghuR

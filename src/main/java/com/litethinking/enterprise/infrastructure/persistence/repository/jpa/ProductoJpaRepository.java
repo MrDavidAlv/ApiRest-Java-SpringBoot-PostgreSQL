@@ -2,12 +2,13 @@ package com.litethinking.enterprise.infrastructure.persistence.repository.jpa;
 
 import com.litethinking.enterprise.infrastructure.persistence.entity.ProductoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface ProductoJpaRepository extends JpaRepository<ProductoEntity, String> {
+public interface ProductoJpaRepository extends JpaRepository<ProductoEntity, String>, JpaSpecificationExecutor<ProductoEntity> {
 
     List<ProductoEntity> findAllByActivoTrue();
 

@@ -43,6 +43,9 @@ public class ProductoEntity {
     @Column(name = "activo", nullable = false)
     private Boolean activo;
 
+    @Column(name = "url_imagen", length = 500)
+    private String urlImagen;
+
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<ProductoPrecioEntity> precios = new HashSet<>();
 

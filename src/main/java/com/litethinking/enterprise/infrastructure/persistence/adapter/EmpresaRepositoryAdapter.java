@@ -1,13 +1,17 @@
 package com.litethinking.enterprise.infrastructure.persistence.adapter;
 
+import com.litethinking.enterprise.application.dto.EmpresaFilters;
 import com.litethinking.enterprise.domain.model.Empresa;
 import com.litethinking.enterprise.domain.model.valueobject.Nit;
 import com.litethinking.enterprise.domain.port.EmpresaRepositoryPort;
 import com.litethinking.enterprise.infrastructure.persistence.entity.EmpresaEntity;
 import com.litethinking.enterprise.infrastructure.persistence.mapper.EmpresaPersistenceMapper;
 import com.litethinking.enterprise.infrastructure.persistence.repository.jpa.EmpresaJpaRepository;
+import jakarta.persistence.criteria.Predicate;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,8 +54,41 @@ public class EmpresaRepositoryAdapter implements EmpresaRepositoryPort {
     }
 
     @Override
+    public List<Empresa> buscar(EmpresaFilters filters) {
+        Specification<EmpresaEntity> spec = buildSpecification(filters);
+        return jpaRepository.findAll(spec).stream()
+                .map(mapper::toDomain)
+                .toList();
+    }
+
+    @Override
     public boolean existePorNit(Nit nit) {
         return jpaRepository.existsById(nit.getValue());
+    }
+
+    private Specification<EmpresaEntity> buildSpecification(EmpresaFilters filters) {
+        return (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (filters.searchTerm() != null && !filters.searchTerm().isBlank()) {
+                String searchPattern = "%" + filters.searchTerm().toLowerCase() + "%";
+                Predicate nombreMatch = criteriaBuilder.like(
+                        criteriaBuilder.lower(root.get("nombre")),
+                        searchPattern
+                );
+                Predicate nitMatch = criteriaBuilder.like(
+                        criteriaBuilder.lower(root.get("nit")),
+                        searchPattern
+                );
+                predicates.add(criteriaBuilder.or(nombreMatch, nitMatch));
+            }
+
+            if (filters.activo() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("activo"), filters.activo()));
+            }
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        };
     }
 
     @Override
