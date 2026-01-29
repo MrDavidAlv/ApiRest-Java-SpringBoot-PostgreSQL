@@ -2,6 +2,7 @@ package com.litethinking.enterprise.interfaces.exception;
 
 import com.litethinking.enterprise.domain.exception.BusinessRuleViolationException;
 import com.litethinking.enterprise.domain.exception.DuplicateResourceException;
+import com.litethinking.enterprise.domain.exception.InvalidCredentialsException;
 import com.litethinking.enterprise.domain.exception.InvalidValueObjectException;
 import com.litethinking.enterprise.domain.exception.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -101,6 +102,24 @@ public class GlobalExceptionHandler {
                 .build();
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidCredentials(
+            InvalidCredentialsException ex,
+            HttpServletRequest request
+    ) {
+        logger.warn("Invalid credentials: {}", ex.getMessage());
+
+        ErrorResponse error = ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .error(HttpStatus.UNAUTHORIZED.getReasonPhrase())
+                .message(ex.getMessage())
+                .path(request.getRequestURI())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

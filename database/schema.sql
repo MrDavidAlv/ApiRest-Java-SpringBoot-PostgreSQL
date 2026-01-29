@@ -162,14 +162,14 @@ INSERT INTO estados_orden (nombre) VALUES
 ON CONFLICT (nombre) DO NOTHING;
 
 -- Usuario administrador
--- Password: Admin123! (BCrypt cost 12)
+-- Password: Admin123* (BCrypt cost 12)
 INSERT INTO usuarios (correo, password, rol_id, activo) VALUES
-('admin@litethinking.com', '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5GyYKKMQzzzm6',
+('admin@litethinking.com', '$2a$12$tK2A9uwCeq76YU404lpnFuiPwKiGQqSMcE7I/T1lr.duljvTHKCAy',
     (SELECT id FROM roles WHERE nombre = 'ADMIN'), true)
 ON CONFLICT (correo) DO NOTHING;
 
 -- Usuario externo
--- Password: Externo123! (BCrypt cost 12)
+-- Password: Externo123* (BCrypt cost 12)
 INSERT INTO usuarios (correo, password, rol_id, activo) VALUES
 ('externo@litethinking.com', '$2a$12$8RrKQJZGh.VYXxUj8rDcO.HfY8hxRxq4pS7MhY8yZqN5LXqJq7RXG',
     (SELECT id FROM roles WHERE nombre = 'EXTERNO'), true)

@@ -3,7 +3,7 @@ package com.litethinking.enterprise.application.usecase;
 import com.litethinking.enterprise.application.dto.request.LoginRequest;
 import com.litethinking.enterprise.application.dto.response.LoginResponse;
 import com.litethinking.enterprise.domain.exception.BusinessRuleViolationException;
-import com.litethinking.enterprise.domain.exception.ResourceNotFoundException;
+import com.litethinking.enterprise.domain.exception.InvalidCredentialsException;
 import com.litethinking.enterprise.domain.model.Usuario;
 import com.litethinking.enterprise.domain.model.valueobject.Email;
 import com.litethinking.enterprise.domain.port.UsuarioRepositoryPort;
@@ -37,14 +37,14 @@ public class AuthenticationUseCase {
         Email correo = Email.of(request.correo());
 
         Usuario usuario = usuarioRepository.buscarPorCorreo(correo)
-                .orElseThrow(() -> new ResourceNotFoundException("Invalid credentials"));
+                .orElseThrow(InvalidCredentialsException::withDefaultMessage);
 
         if (!usuario.isActivo()) {
             throw new BusinessRuleViolationException("User account is inactive");
         }
 
         if (!passwordEncoder.matches(request.password(), usuario.getPasswordHash())) {
-            throw new ResourceNotFoundException("Invalid credentials");
+            throw InvalidCredentialsException.withDefaultMessage();
         }
 
         String token = jwtTokenProvider.generateToken(usuario);
